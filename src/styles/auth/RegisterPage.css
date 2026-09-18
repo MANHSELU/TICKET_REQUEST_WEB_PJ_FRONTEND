@@ -1,0 +1,32 @@
+.login-panel--modal.register-panel {
+  max-height: none;
+  overflow-y: visible;
+}
+
+.otp-email-highlight {
+  color: var(--teal);
+}
+
+.otp-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+.otp-input-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--panel-heading);
+  border: 1.5px solid var(--panel-border);
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.otp-input-box:focus {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(13, 157, 179, 0.15);
+}
