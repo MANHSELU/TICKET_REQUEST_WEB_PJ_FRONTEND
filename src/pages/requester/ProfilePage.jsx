@@ -8,6 +8,16 @@ import { getProfileApi, updateProfileApi } from '../../services/requester/profil
 import '../../styles/requester/NewTicketModal.css'
 import '../../styles/requester/ProfilePage.css'
 
+const formatDate = (value) => {
+  if (!value) return ''
+  const date = new Date(value)
+  return date.toLocaleDateString('vi-VN', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  })
+}
+
 function ProfilePage() {
   const navigate = useNavigate()
   const avatarInputRef = useRef(null)
@@ -32,7 +42,10 @@ function ProfilePage() {
         setFullName(profile.fullName)
         setPhone(profile.phone)
         setEmail(profile.email)
-        setJoinedAt(profile.joinedAt)
+        setJoinedAt(formatDate(profile.createdAt))
+        if (profile.imgUrl) {
+          setAvatarPreview(profile.imgUrl)
+        }
       } catch (error) {
         setProfileAlert({ type: 'error', message: error.response?.data?.message || 'Không tải được hồ sơ' })
       }
