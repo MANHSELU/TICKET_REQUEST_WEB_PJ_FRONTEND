@@ -12,6 +12,7 @@ import {
   Search,
   Settings,
   Ticket,
+  UserCircle,
   Users,
 } from 'lucide-react'
 import logoImg from '../../assets/logo.png'
@@ -25,6 +26,7 @@ const NAV_SECTIONS = [
       { icon: LayoutDashboard, label: 'Bảng điều khiển', key: 'dashboard', path: '/requester/dashboard' },
       { icon: ClipboardList, label: 'Gửi yêu cầu', key: 'submit' },
       { icon: Ticket, label: 'Yêu cầu của tôi', key: 'tickets', path: '/requester/tickets' },
+      { icon: UserCircle, label: 'Hồ sơ cá nhân', key: 'profile', path: '/requester/profile' },
     ],
   },
   {
