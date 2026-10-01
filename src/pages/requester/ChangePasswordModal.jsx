@@ -36,7 +36,7 @@ function ChangePasswordModal({ open, onClose }) {
     }
     setIsSubmitting(true)
     try {
-      await changePasswordApi({ oldPassword, newPassword })
+      await changePasswordApi({ oldPassword, newPassword, confirmPassword: confirmNewPassword })
       setAlert({ type: 'success', message: 'Đổi mật khẩu thành công' })
       setTimeout(handleClose, 1500)
     } catch (error) {
