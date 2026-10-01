@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Bold,
   Code,
@@ -6,47 +6,18 @@ import {
   Image,
   ImagePlus,
   Italic,
-  KeyRound,
   Link2,
   List,
   ListOrdered,
-  Monitor,
   PenSquare,
   Quote,
   Send,
   Trash2,
   Underline,
-  Wrench,
   X,
 } from 'lucide-react'
+import { createTicketApi, getItServicesApi, getTicketCategoriesApi } from '../../services/requester/ticketRequest.service'
 import '../../styles/requester/NewTicketModal.css'
-
-const REQUEST_TYPES = [
-  {
-    id: 'issue',
-    icon: Wrench,
-    title: 'Sự cố / Trục trặc kỹ thuật',
-    description: 'Lỗi phần cứng, phần mềm gặp trục trặc,...',
-  },
-  {
-    id: 'hardware',
-    icon: Monitor,
-    title: 'Cấp phát Thiết bị',
-    description: 'Màn hình, dock, thiết bị ngoại vi, laptop',
-  },
-  {
-    id: 'software',
-    icon: PenSquare,
-    title: 'Phần mềm & Bản quyền',
-    description: 'Cài đặt ứng dụng, gia hạn license, công cụ',
-  },
-  {
-    id: 'access',
-    icon: KeyRound,
-    title: 'Truy cập & Quyền hạn',
-    description: 'Phân quyền, đặt lại 2FA, thư mục...',
-  },
-]
 
 const TOOLBAR_BUTTONS = [
   { icon: Bold, label: 'In đậm' },
@@ -60,11 +31,34 @@ const TOOLBAR_BUTTONS = [
 ]
 
 function NewTicketModal({ open, onClose }) {
-  const [selectedType, setSelectedType] = useState('issue')
+  const [itServices, setItServices] = useState([])
+  const [ticketCategories, setTicketCategories] = useState([])
+  const [selectedItServiceId, setSelectedItServiceId] = useState('')
+  const [selectedTicketCategoryId, setSelectedTicketCategoryId] = useState('')
   const [summary, setSummary] = useState('')
   const [description, setDescription] = useState('')
   const [files, setFiles] = useState([])
+  const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const fileInputRef = useRef(null)
+
+  useEffect(() => {
+    if (!open) return
+
+    const fetchOptions = async () => {
+      try {
+        const [servicesRes, categoriesRes] = await Promise.all([
+          getItServicesApi(),
+          getTicketCategoriesApi(),
+        ])
+        setItServices(servicesRes.data.data)
+        setTicketCategories(categoriesRes.data.data)
+      } catch (err) {
+        setError(err.response?.data?.message || 'Không tải được danh sách dịch vụ/danh mục')
+      }
+    }
+    fetchOptions()
+  }, [open])
 
   if (!open) return null
 
@@ -91,9 +85,29 @@ function NewTicketModal({ open, onClose }) {
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    onClose()
+    setError('')
+
+    if (!selectedItServiceId || !selectedTicketCategoryId) {
+      setError('Vui lòng chọn dịch vụ và danh mục yêu cầu')
+      return
+    }
+
+    setIsSubmitting(true)
+    try {
+      await createTicketApi({
+        itServiceId: selectedItServiceId,
+        ticketCategoryId: selectedTicketCategoryId,
+        title: summary,
+        description,
+      })
+      onClose()
+    } catch (err) {
+      setError(err.response?.data?.message || 'Đã có lỗi xảy ra')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -118,28 +132,29 @@ function NewTicketModal({ open, onClose }) {
               <span>1. Chọn loại yêu cầu phù hợp nhất</span>
               <span className="ticket-required">Bắt buộc</span>
             </div>
-            <div className="ticket-type-grid">
-              {REQUEST_TYPES.map((type) => (
-                <button
-                  type="button"
-                  key={type.id}
-                  className={
-                    type.id === selectedType
-                      ? 'ticket-type-card ticket-type-card--active'
-                      : 'ticket-type-card'
-                  }
-                  onClick={() => setSelectedType(type.id)}
-                >
-                  <span className="ticket-type-card__icon">
-                    <type.icon size={18} />
-                  </span>
-                  <span>
-                    <span className="ticket-type-card__title">{type.title}</span>
-                    <span className="ticket-type-card__desc">{type.description}</span>
-                  </span>
-                </button>
+            <select
+              value={selectedItServiceId}
+              onChange={(event) => setSelectedItServiceId(event.target.value)}
+            >
+              <option value="">-- Chọn dịch vụ --</option>
+              {itServices.map((service) => (
+                <option key={service.id} value={service.id}>
+                  {service.service_name}
+                </option>
               ))}
-            </div>
+            </select>
+            <select
+              value={selectedTicketCategoryId}
+              onChange={(event) => setSelectedTicketCategoryId(event.target.value)}
+            >
+              <option value="">-- Chọn danh mục --</option>
+              {ticketCategories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.category_name}
+                </option>
+              ))}
+            </select>
+            {error && <p className="ticket-required">{error}</p>}
           </section>
 
           <section className="ticket-section">
@@ -258,9 +273,14 @@ function NewTicketModal({ open, onClose }) {
             <button type="button" className="ticket-btn ticket-btn--ghost" onClick={onClose}>
               Hủy
             </button>
-            <button type="submit" className="ticket-btn ticket-btn--primary" onClick={handleSubmit}>
+            <button
+              type="submit"
+              className="ticket-btn ticket-btn--primary"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
               <Send size={15} />
-              Gửi Ticket Hỗ trợ
+              {isSubmitting ? 'Đang gửi...' : 'Gửi Ticket Hỗ trợ'}
             </button>
           </div>
         </footer>
