@@ -15,3 +15,7 @@ export const resendOtpApi = async (data) => {
 export const loginApi = async (data) => {
     return api.post("/api/auth/login", data);
 };
+
+export const refreshTokenApi = async (refreshToken) => {
+    return api.post("/api/auth/refresh-token", { refreshToken });
+};
