@@ -1,0 +1,244 @@
+.admin-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  align-items: start;
+  margin-bottom: 20px;
+}
+
+.admin-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 8px 0;
+}
+
+.admin-bar-chart__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-bar-chart__label {
+  width: 90px;
+  flex-shrink: 0;
+  font-size: 12.5px;
+  color: #334155;
+}
+
+.admin-bar-chart__track {
+  flex: 1;
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.admin-bar-chart__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.admin-bar-chart__value {
+  width: 28px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admin-recent-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.admin-recent-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.admin-recent-card__header .admin-chart-card__title {
+  margin-bottom: 0;
+}
+
+.admin-recent-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  color: var(--teal, #0d9db3);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-recent-card__link:hover {
+  text-decoration: underline;
+}
+
+.admin-recent-card .thist-table-wrap {
+  margin-bottom: 0;
+  border: none;
+}
+
+.admin-chart-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.admin-chart-card__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.admin-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-chart__svg {
+  width: 160px;
+  height: 160px;
+}
+
+.admin-chart__total-value {
+  font-size: 28px;
+  font-weight: 700;
+  fill: #0f172a;
+  font-family: var(--sans, system-ui, sans-serif);
+}
+
+.admin-chart__total-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  fill: #94a3b8;
+  font-family: var(--sans, system-ui, sans-serif);
+}
+
+.admin-chart__legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.admin-chart__legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: #334155;
+}
+
+.admin-chart__legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.admin-chart__legend-label {
+  flex: 1;
+}
+
+.admin-chart__legend-value {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admin-chart__empty {
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.admin-quicklink-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.admin-quicklink-grid--compact {
+  align-content: start;
+}
+
+.admin-quicklink-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.admin-quicklink-card:hover {
+  border-color: #0d9db3;
+  background: #f0fbfc;
+}
+
+.admin-quicklink-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #e6f7fa;
+  color: #0d9db3;
+  flex-shrink: 0;
+}
+
+.admin-quicklink-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.admin-quicklink-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admin-quicklink-card__desc {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.admin-quicklink-card__arrow {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .admin-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .admin-quicklink-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
