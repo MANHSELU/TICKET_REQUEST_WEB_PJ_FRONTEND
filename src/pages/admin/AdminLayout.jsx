@@ -4,7 +4,7 @@ import { ClipboardList, FileUp, Gauge, Grid2x2, LayoutDashboard, LogOut, Setting
 import logoImg from '../../assets/logo.png'
 import { getProfileApi } from '../../services/requester/profileManagement.service'
 import { decodeJwt } from '../../utils/jwt.util'
-import '../../styles/requester/RequesterDashboardPage.css'
+import '../../styles/admin/AdminLayout.css'
 import '../../styles/admin/AdminCommon.css'
 
 const ROLE_LABEL = {
