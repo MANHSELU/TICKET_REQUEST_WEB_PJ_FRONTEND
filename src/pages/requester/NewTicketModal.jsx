@@ -63,11 +63,7 @@ function NewTicketModal({ open, onClose }) {
   if (!open) return null
 
   const handleFilesSelected = (fileList) => {
-    const picked = Array.from(fileList).map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
-    }))
+    const picked = Array.from(fileList)
     setFiles((current) => [...current, ...picked])
   }
 
@@ -96,12 +92,15 @@ function NewTicketModal({ open, onClose }) {
 
     setIsSubmitting(true)
     try {
-      await createTicketApi({
-        itServiceId: selectedItServiceId,
-        ticketCategoryId: selectedTicketCategoryId,
-        title: summary,
-        description,
+      const formData = new FormData()
+      formData.append('itServiceId', selectedItServiceId)
+      formData.append('ticketCategoryId', selectedTicketCategoryId)
+      formData.append('title', summary)
+      formData.append('description', description)
+      files.forEach((file) => {
+        formData.append('attachments', file)
       })
+      await createTicketApi(formData)
       onClose()
     } catch (err) {
       setError(err.response?.data?.message || 'Đã có lỗi xảy ra')
@@ -132,28 +131,38 @@ function NewTicketModal({ open, onClose }) {
               <span>1. Chọn loại yêu cầu phù hợp nhất</span>
               <span className="ticket-required">Bắt buộc</span>
             </div>
-            <select
-              value={selectedItServiceId}
-              onChange={(event) => setSelectedItServiceId(event.target.value)}
-            >
-              <option value="">-- Chọn dịch vụ --</option>
-              {itServices.map((service) => (
-                <option key={service.id} value={service.id}>
-                  {service.service_name}
-                </option>
-              ))}
-            </select>
-            <select
-              value={selectedTicketCategoryId}
-              onChange={(event) => setSelectedTicketCategoryId(event.target.value)}
-            >
-              <option value="">-- Chọn danh mục --</option>
-              {ticketCategories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.category_name}
-                </option>
-              ))}
-            </select>
+            <div className="ticket-select-row">
+              <div className="ticket-select-group">
+                <label className="ticket-select-group__label">Dịch vụ</label>
+                <select
+                  className="ticket-select"
+                  value={selectedItServiceId}
+                  onChange={(event) => setSelectedItServiceId(event.target.value)}
+                >
+                  <option value="">-- Chọn dịch vụ --</option>
+                  {itServices.map((service) => (
+                    <option key={service.id} value={service.id}>
+                      {service.service_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="ticket-select-group">
+                <label className="ticket-select-group__label">Danh mục</label>
+                <select
+                  className="ticket-select"
+                  value={selectedTicketCategoryId}
+                  onChange={(event) => setSelectedTicketCategoryId(event.target.value)}
+                >
+                  <option value="">-- Chọn danh mục --</option>
+                  {ticketCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.category_name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
             {error && <p className="ticket-required">{error}</p>}
           </section>
 
@@ -204,7 +213,7 @@ function NewTicketModal({ open, onClose }) {
           <section className="ticket-section">
             <div className="ticket-section__label">
               <span>4. Tệp đính kèm &amp; Minh chứng hệ thống</span>
-              <span className="ticket-hint">Tối đa 25 MB</span>
+              <span className="ticket-hint">Tối đa 5 ảnh, 3 MB/ảnh</span>
             </div>
             <div
               className="ticket-dropzone"
@@ -215,17 +224,18 @@ function NewTicketModal({ open, onClose }) {
                 <ImagePlus size={22} />
               </span>
               <p>
-                Kéo &amp; thả ảnh chụp màn hình, log, hoặc báo cáo hệ thống vào đây
+                Kéo &amp; thả ảnh chụp màn hình vào đây
                 <br />
                 hoặc{' '}
                 <button type="button" onClick={() => fileInputRef.current?.click()}>
-                  chọn tệp
+                  chọn ảnh
                 </button>{' '}
-                từ máy tính (hỗ trợ PNG, JPG, PDF tối đa 25MB)
+                từ máy tính (chỉ nhận ảnh, tối đa 5 ảnh, 3MB/ảnh)
               </p>
               <input
                 ref={fileInputRef}
                 type="file"
+                accept="image/*"
                 multiple
                 hidden
                 onChange={(event) => handleFilesSelected(event.target.files)}
