@@ -17,6 +17,21 @@ import logoImg from '../../assets/logo.png'
 import '../../styles/auth/LoginPage.css'
 import { loginApi } from '../../services/auth/auth.service'
 import Alert from '../../components/common/Alert'
+import { decodeJwt } from '../../utils/jwt.util'
+
+const ROLE = {
+  REQUESTER: 1,
+  SUPPORTER: 2,
+  HEAD_SUPPORTER: 4,
+  ADMIN: 8,
+}
+
+const getDashboardPathByRole = (role) => {
+  if (role & ROLE.ADMIN) return '/admin/dashboard'
+  if (role & ROLE.HEAD_SUPPORTER) return '/supporter/dashboard'
+  if (role & ROLE.SUPPORTER) return '/supporter/dashboard'
+  return '/requester/dashboard'
+}
 
 function LoginPage() {
   const navigate = useNavigate()
@@ -36,9 +51,10 @@ function LoginPage() {
       const { accessToken, refreshToken } = response.data.data;
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
+      const { role } = decodeJwt(accessToken);
       setAlert({ type: 'success', message: 'Đăng nhập thành công. Đang chuyển hướng ....' });
       setTimeout(() => {
-      navigate('/requester/dashboard');
+      navigate(getDashboardPathByRole(role));
       }, 3000);
     } catch (error) {
       setAlert({ type: 'error', message: error.response?.data?.message || 'Đã có lỗi xảy ra' });

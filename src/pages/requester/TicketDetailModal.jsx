@@ -4,10 +4,11 @@ import {
   CheckCircle2,
   Circle,
   FileText,
+  Paperclip,
   Send,
   X,
 } from 'lucide-react'
-import { getMessagesApi, sendMessageApi } from '../../services/requester/ticketRequest.service'
+import { getMessagesApi, getMyTicketDetailApi, sendMessageApi } from '../../services/requester/ticketRequest.service'
 import '../../styles/requester/NewTicketModal.css'
 import '../../styles/requester/TicketDetailModal.css'
 
@@ -35,11 +36,22 @@ const formatDate = (value) => {
 function TicketDetailModal({ ticket, onClose }) {
   const [reply, setReply] = useState('')
   const [messages, setMessages] = useState([])
+  const [ticketDetail, setTicketDetail] = useState(null)
   const [error, setError] = useState('')
   const [isSending, setIsSending] = useState(false)
 
   useEffect(() => {
     if (!ticket) return
+
+    const fetchDetail = async () => {
+      try {
+        const res = await getMyTicketDetailApi(ticket.id)
+        setTicketDetail(res.data.data)
+      } catch (err) {
+        setError(err.response?.data?.message || 'Không tải được chi tiết yêu cầu')
+      }
+    }
+    fetchDetail()
 
     const fetchMessages = async () => {
       try {
@@ -54,8 +66,9 @@ function TicketDetailModal({ ticket, onClose }) {
 
   if (!ticket) return null
 
-  const currentStageIndex = STATUS_STAGE_INDEX[ticket.status] ?? 0
-  const showThread = ticket.status !== 'OPEN'
+  const currentTicket = ticketDetail || ticket
+  const currentStageIndex = STATUS_STAGE_INDEX[currentTicket.status] ?? 0
+  const showThread = currentTicket.status !== 'OPEN'
 
   const handleSend = async (event) => {
     event.preventDefault()
@@ -86,8 +99,8 @@ function TicketDetailModal({ ticket, onClose }) {
         <div className="ticket-modal__accent" />
         <header className="ticket-modal__header">
           <div className="tdetail-header">
-            <span className="tdetail-header__id">#{ticket.id}</span>
-            <h2>{ticket.title}</h2>
+            <span className="tdetail-header__id">#{currentTicket.id}</span>
+            <h2>{currentTicket.title}</h2>
           </div>
           <button type="button" className="ticket-modal__close" onClick={onClose} aria-label="Đóng">
             <X size={18} />
@@ -126,7 +139,7 @@ function TicketDetailModal({ ticket, onClose }) {
                   <Calendar size={13} />
                   Ngày gửi
                 </span>
-                <span className="tdetail-info-item__value">{formatDate(ticket.createdAt)}</span>
+                <span className="tdetail-info-item__value">{formatDate(currentTicket.createdAt)}</span>
               </div>
             </div>
 
@@ -137,8 +150,33 @@ function TicketDetailModal({ ticket, onClose }) {
                 <FileText size={13} />
                 Mô tả
               </span>
-              <p className="tdetail-description">{ticket.description}</p>
+              <p className="tdetail-description">{currentTicket.description}</p>
             </div>
+
+            {currentTicket.attachments?.length > 0 && (
+              <>
+                <div className="tdetail-summary-card__divider" />
+                <div className="tdetail-info-item">
+                  <span className="tdetail-info-item__label">
+                    <Paperclip size={13} />
+                    Ảnh đính kèm
+                  </span>
+                  <div className="tdetail-attachments">
+                    {currentTicket.attachments.map((attachment) => (
+                      <a
+                        key={attachment.id}
+                        href={attachment.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="tdetail-attachment"
+                      >
+                        <img src={attachment.fileUrl} alt={attachment.fileName || 'Ảnh đính kèm'} />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {error && <p className="ticket-required">{error}</p>}

@@ -1,7 +1,9 @@
 import api from "../api.service";
 
-export const createTicketApi = async (data) => {
-    return api.post("/api/requester/tickets", data);
+export const createTicketApi = async (formData) => {
+    return api.post("/api/requester/tickets", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
 };
 
 export const getMyTicketsApi = async () => {
