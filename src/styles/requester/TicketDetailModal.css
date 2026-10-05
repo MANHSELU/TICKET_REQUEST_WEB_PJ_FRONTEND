@@ -2,6 +2,14 @@
   max-width: 640px;
 }
 
+.thist-status-badge--high {
+  background: #fff7ed;
+  color: #c2410c;
+}
+.thist-status-badge--high .thist-status-badge__dot {
+  background: #f97316;
+}
+
 .ticket-modal__header:has(.tdetail-header) {
   align-items: flex-start;
 }

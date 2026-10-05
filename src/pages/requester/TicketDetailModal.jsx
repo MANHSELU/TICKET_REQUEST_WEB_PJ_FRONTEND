@@ -4,12 +4,16 @@ import {
   CheckCircle2,
   Circle,
   FileText,
+  Gauge,
+  Grid2x2,
   Paperclip,
   Send,
+  Wrench,
   X,
 } from 'lucide-react'
 import { getMessagesApi, getMyTicketDetailApi, sendMessageApi } from '../../services/requester/ticketRequest.service'
 import '../../styles/requester/NewTicketModal.css'
+import '../../styles/requester/TicketHistoryPage.css'
 import '../../styles/requester/TicketDetailModal.css'
 
 const STAGES = ['Chưa tiếp nhận', 'Đang xử lý', 'Đã hoàn thành']
@@ -19,6 +23,20 @@ const STATUS_STAGE_INDEX = {
   IN_PROGRESS: 1,
   RESOLVED: 2,
   CLOSED: 2,
+}
+
+const PRIORITY_LABEL = {
+  LOW: 'Thấp',
+  MEDIUM: 'Trung bình',
+  HIGH: 'Cao',
+  URGENT: 'Khẩn cấp',
+}
+
+const PRIORITY_TONE = {
+  LOW: 'closed',
+  MEDIUM: 'progress',
+  HIGH: 'high',
+  URGENT: 'waiting',
 }
 
 const formatDate = (value) => {
@@ -140,6 +158,41 @@ function TicketDetailModal({ ticket, onClose }) {
                   Ngày gửi
                 </span>
                 <span className="tdetail-info-item__value">{formatDate(currentTicket.createdAt)}</span>
+              </div>
+
+              <div className="tdetail-info-item">
+                <span className="tdetail-info-item__label">
+                  <Gauge size={13} />
+                  Mức độ ưu tiên
+                </span>
+                <span
+                  className={`thist-status-badge thist-status-badge--${
+                    PRIORITY_TONE[currentTicket.priority] || 'closed'
+                  }`}
+                >
+                  <span className="thist-status-badge__dot" />
+                  {PRIORITY_LABEL[currentTicket.priority] || currentTicket.priority || '—'}
+                </span>
+              </div>
+
+              <div className="tdetail-info-item">
+                <span className="tdetail-info-item__label">
+                  <Grid2x2 size={13} />
+                  Danh mục yêu cầu
+                </span>
+                <span className="tdetail-info-item__value">
+                  {currentTicket.ticketCategory?.category_name || '—'}
+                </span>
+              </div>
+
+              <div className="tdetail-info-item">
+                <span className="tdetail-info-item__label">
+                  <Wrench size={13} />
+                  Dịch vụ
+                </span>
+                <span className="tdetail-info-item__value">
+                  {currentTicket.itService?.service_name || '—'}
+                </span>
               </div>
             </div>
 

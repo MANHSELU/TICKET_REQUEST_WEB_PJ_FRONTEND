@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
   AlertTriangle,
   ArrowLeft,
-  ArrowRight,
   CheckCircle2,
   ChevronRight,
+  Eye,
   Folder,
   Gauge,
   Loader2,
@@ -15,6 +15,7 @@ import {
 } from 'lucide-react'
 import RequesterLayout from './RequesterLayout.jsx'
 import TicketDetailModal from './TicketDetailModal.jsx'
+import Toast from '../../components/common/Toast.jsx'
 import { getMyTicketsApi } from '../../services/requester/ticketRequest.service'
 import '../../styles/requester/TicketHistoryPage.css'
 
@@ -46,9 +47,12 @@ const formatDate = (value) => {
 
 function TicketHistoryPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [tickets, setTickets] = useState([])
   const [selectedTicket, setSelectedTicket] = useState(null)
   const [error, setError] = useState('')
+  const [toast, setToast] = useState(null)
+  const toastTimerRef = useRef(null)
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -61,6 +65,18 @@ function TicketHistoryPage() {
     }
     fetchTickets()
   }, [])
+
+  useEffect(() => {
+    if (location.state?.toastMessage) {
+      setToast({ message: location.state.toastMessage, type: 'success' })
+      toastTimerRef.current = setTimeout(() => setToast(null), 2000)
+      navigate(location.pathname, { replace: true, state: null })
+    }
+    return () => {
+      if (toastTimerRef.current) clearTimeout(toastTimerRef.current)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state])
 
   const summaryCards = [
     {
@@ -155,21 +171,25 @@ function TicketHistoryPage() {
         <table className="thist-table">
           <thead>
             <tr>
-              <th>Mã ticket</th>
+              <th>STT</th>
               <th>Tiêu đề</th>
+              <th>Danh mục yêu cầu</th>
+              <th>Dịch vụ</th>
               <th>Ngày gửi</th>
               <th>Trạng thái</th>
               <th className="thist-table__actions-head">Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {tickets.map((ticket) => (
+            {tickets.map((ticket, index) => (
               <tr key={ticket.id}>
-                <td className="thist-table__id">#{ticket.id}</td>
+                <td className="thist-table__id">{index + 1}</td>
                 <td>
                   <div className="thist-table__subject-title">{ticket.title}</div>
                   <div className="thist-table__subject-note">{ticket.description}</div>
                 </td>
+                <td className="thist-table__meta">{ticket.ticketCategory?.category_name || '—'}</td>
+                <td className="thist-table__meta">{ticket.itService?.service_name || '—'}</td>
                 <td className="thist-table__date">{formatDate(ticket.createdAt)}</td>
                 <td>
                   <span className={`thist-status-badge thist-status-badge--${STATUS_TONE[ticket.status] || 'closed'}`}>
@@ -180,11 +200,11 @@ function TicketHistoryPage() {
                 <td className="thist-table__actions">
                   <button
                     type="button"
-                    className="thist-row-link"
-                    aria-label="Xem chi tiết"
+                    className="thist-detail-btn"
                     onClick={() => setSelectedTicket(ticket)}
                   >
-                    <ArrowRight size={16} />
+                    <Eye size={14} />
+                    Chi tiết
                   </button>
                 </td>
               </tr>
@@ -194,6 +214,8 @@ function TicketHistoryPage() {
       </div>
 
       <TicketDetailModal ticket={selectedTicket} onClose={() => setSelectedTicket(null)} />
+
+      <Toast toast={toast} />
     </RequesterLayout>
   )
 }

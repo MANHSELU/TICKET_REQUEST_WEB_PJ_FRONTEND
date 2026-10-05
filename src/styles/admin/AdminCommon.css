@@ -132,8 +132,8 @@
   table-layout: fixed !important;
 }
 
-.admin-table--even:not(.admin-table--no-actions) th:last-child,
-.admin-table--even:not(.admin-table--no-actions) td:last-child {
+.admin-table--even:not(.admin-table--no-actions):not(.admin-table--5col) th:last-child,
+.admin-table--even:not(.admin-table--no-actions):not(.admin-table--5col) td:last-child {
   width: 160px !important;
   text-align: center !important;
 }
@@ -195,19 +195,20 @@
   width: 28% !important;
 }
 
-.admin-table--5col th:nth-child(1),
-.admin-table--5col td:nth-child(1) {
-  width: 70px !important;
-  text-align: center !important;
+table.thist-table.admin-table--5col {
+  table-layout: fixed !important;
 }
 
-.admin-table--5col th:nth-child(2),
-.admin-table--5col td:nth-child(2),
-.admin-table--5col th:nth-child(3),
-.admin-table--5col td:nth-child(3),
-.admin-table--5col th:nth-child(4),
-.admin-table--5col td:nth-child(4) {
-  width: 23% !important;
+table.thist-table.admin-table--5col th,
+table.thist-table.admin-table--5col td {
+  width: 20% !important;
+}
+
+table.thist-table.admin-table--5col th:nth-child(1),
+table.thist-table.admin-table--5col td:nth-child(1),
+table.thist-table.admin-table--5col th:last-child,
+table.thist-table.admin-table--5col td:last-child {
+  text-align: center !important;
 }
 
 .admin-action-cell {

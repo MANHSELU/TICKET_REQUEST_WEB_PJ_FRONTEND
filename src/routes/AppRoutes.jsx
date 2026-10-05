@@ -4,6 +4,7 @@ import RegisterPage from '../pages/auth/RegisterPage.jsx'
 import VerifyOtpPage from '../pages/auth/VerifyOtpPage.jsx'
 import RequesterDashboardPage from '../pages/requester/RequesterDashboardPage.jsx'
 import TicketHistoryPage from '../pages/requester/TicketHistoryPage.jsx'
+import NewTicketPage from '../pages/requester/NewTicketPage.jsx'
 import ProfilePage from '../pages/requester/ProfilePage.jsx'
 import UserManagementPage from '../pages/admin/UserManagementPage.jsx'
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage.jsx'
@@ -22,6 +23,7 @@ function AppRoutes() {
       <Route path="/auth/verify-otp" element={<VerifyOtpPage />} />
       <Route path="/requester/dashboard" element={<RequesterDashboardPage />} />
       <Route path="/requester/tickets" element={<TicketHistoryPage />} />
+      <Route path="/requester/tickets/new" element={<NewTicketPage />} />
       <Route path="/requester/profile" element={<ProfilePage />} />
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
       <Route path="/admin/users" element={<UserManagementPage />} />

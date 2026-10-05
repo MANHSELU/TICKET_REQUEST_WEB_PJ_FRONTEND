@@ -241,21 +241,39 @@
 .thist-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: auto;
-}
-
-.thist-table th:nth-child(2),
-.thist-table td:nth-child(2) {
-  width: 100%;
+  table-layout: fixed;
 }
 
 .thist-table th:nth-child(1),
-.thist-table td:nth-child(1),
+.thist-table td:nth-child(1) {
+  width: 70px;
+}
+
+.thist-table th:nth-child(5),
+.thist-table td:nth-child(5),
+.thist-table th:nth-child(6),
+.thist-table td:nth-child(6),
+.thist-table th:nth-child(7),
+.thist-table td:nth-child(7) {
+  width: 130px;
+}
+
+.thist-table th:nth-child(2),
+.thist-table td:nth-child(2),
+.thist-table th:nth-child(3),
+.thist-table td:nth-child(3),
+.thist-table th:nth-child(4),
+.thist-table td:nth-child(4) {
+  width: 22%;
+}
+
 .thist-table th:nth-child(2),
 .thist-table td:nth-child(2) {
   text-align: left;
 }
 
+.thist-table th:nth-child(1),
+.thist-table td:nth-child(1),
 .thist-table th:nth-child(3),
 .thist-table td:nth-child(3),
 .thist-table th:nth-child(4),
@@ -263,7 +281,9 @@
 .thist-table th:nth-child(5),
 .thist-table td:nth-child(5),
 .thist-table th:nth-child(6),
-.thist-table td:nth-child(6) {
+.thist-table td:nth-child(6),
+.thist-table th:nth-child(7),
+.thist-table td:nth-child(7) {
   text-align: center;
 }
 
@@ -314,7 +334,7 @@
 }
 
 .thist-table__actions-head {
-  text-align: right !important;
+  text-align: center !important;
 }
 
 .thist-table tbody td {
@@ -344,9 +364,9 @@
 .thist-table__id {
   font-weight: 600;
   color: var(--teal, #0d9db3);
-  font-family: var(--mono, ui-monospace, Consolas, monospace);
-  font-size: 12.5px;
+  font-size: 13px;
   white-space: nowrap;
+  vertical-align: middle;
 }
 
 .thist-table__subject-title {
@@ -389,6 +409,14 @@
 .thist-table__type svg {
   color: #94a3b8;
   flex-shrink: 0;
+}
+
+.thist-table__meta {
+  font-size: 12.5px;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .thist-table__date {
@@ -463,25 +491,29 @@
 }
 
 .thist-table__actions {
-  text-align: right;
+  text-align: center;
+  vertical-align: middle;
 }
 
-.thist-row-link {
+.thist-detail-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  gap: 5px;
   border: none;
-  background: transparent;
-  color: #94a3b8;
-  border-radius: 8px;
+  background: #0d9db3;
+  color: #f0fdfa;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 7px;
   cursor: pointer;
+  margin-top: 4px;
+  white-space: nowrap;
 }
 
-.thist-row-link:hover {
-  background: #f1f5f9;
-  color: #475569;
+.thist-detail-btn:hover {
+  background: #0b8598;
 }
 
 /* ---------- pagination ---------- */
