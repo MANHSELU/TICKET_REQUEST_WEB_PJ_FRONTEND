@@ -1,0 +1,66 @@
+.srat-summary--2col {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+.srat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.srat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.srat-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.srat-card__ticket {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.srat-card__requester {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.srat-card__stars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.srat-star {
+  color: #e2e8f0;
+}
+
+.srat-star--filled {
+  color: #f59e0b;
+  fill: #f59e0b;
+}
+
+.srat-card__comment {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #334155;
+}
+
+@media (max-width: 720px) {
+  .srat-summary--2col {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}

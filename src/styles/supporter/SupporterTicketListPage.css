@@ -1,0 +1,96 @@
+.stk-row {
+  cursor: pointer;
+}
+
+.stk-search--wide {
+  flex: 1;
+  min-width: 280px;
+}
+
+.stk-table td.stk-empty {
+  width: auto !important;
+  display: table-cell;
+  text-align: center;
+  padding: 32px 16px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.stk-empty-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stk-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.stk-actions .thist-detail-btn {
+  margin-top: 0;
+}
+
+.stk-accept-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: none;
+  background: #16a34a;
+  color: #f0fdf4;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 8px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.stk-accept-btn:hover {
+  background: #15803d;
+}
+
+.stk-accept-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.stk-table th:nth-child(1),
+.stk-table td:nth-child(1) {
+  width: 70px;
+}
+
+.stk-table th:nth-child(2),
+.stk-table td:nth-child(2) {
+  width: auto;
+  text-align: left;
+}
+
+.stk-table th:nth-child(3),
+.stk-table td:nth-child(3) {
+  width: 160px;
+  text-align: center;
+}
+
+.stk-table th:nth-child(4),
+.stk-table td:nth-child(4) {
+  width: 130px;
+  text-align: center;
+}
+
+.stk-table th:nth-child(5),
+.stk-table td:nth-child(5) {
+  width: 150px;
+  text-align: center;
+}
+
+.stk-table th:nth-child(6),
+.stk-table td:nth-child(6) {
+  width: 220px;
+  text-align: center;
+}

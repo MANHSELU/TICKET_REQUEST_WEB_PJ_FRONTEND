@@ -13,6 +13,13 @@ import ITServiceCategoryManagementPage from '../pages/admin/ITServiceCategoryMan
 import TicketCategoryManagementPage from '../pages/admin/TicketCategoryManagementPage.jsx'
 import SupportTeamManagementPage from '../pages/admin/SupportTeamManagementPage.jsx'
 import AdminTicketListPage from '../pages/admin/AdminTicketListPage.jsx'
+import SupporterTicketListPage from '../pages/supporter/SupporterTicketListPage.jsx'
+import SupporterProfilePage from '../pages/supporter/SupporterProfilePage.jsx'
+import SupporterClosedTicketsPage from '../pages/supporter/SupporterClosedTicketsPage.jsx'
+import SupporterFeedPage from '../pages/supporter/SupporterFeedPage.jsx'
+import SupporterCreatePostPage from '../pages/supporter/SupporterCreatePostPage.jsx'
+import SupporterPostHistoryPage from '../pages/supporter/SupporterPostHistoryPage.jsx'
+import SupporterRatingsPage from '../pages/supporter/SupporterRatingsPage.jsx'
 
 function AppRoutes() {
   return (
@@ -32,6 +39,13 @@ function AppRoutes() {
       <Route path="/admin/ticket-categories" element={<TicketCategoryManagementPage />} />
       <Route path="/admin/support-teams" element={<SupportTeamManagementPage />} />
       <Route path="/admin/tickets" element={<AdminTicketListPage />} />
+      <Route path="/supporter/dashboard" element={<SupporterTicketListPage />} />
+      <Route path="/supporter/tickets/closed" element={<SupporterClosedTicketsPage />} />
+      <Route path="/supporter/feed" element={<SupporterFeedPage />} />
+      <Route path="/supporter/posts/new" element={<SupporterCreatePostPage />} />
+      <Route path="/supporter/posts" element={<SupporterPostHistoryPage />} />
+      <Route path="/supporter/ratings" element={<SupporterRatingsPage />} />
+      <Route path="/supporter/profile" element={<SupporterProfilePage />} />
     </Routes>
   )
 }

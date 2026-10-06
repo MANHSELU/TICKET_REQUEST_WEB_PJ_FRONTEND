@@ -1,5 +1,5 @@
 .ticket-modal--wide {
-  max-width: 640px;
+  max-width: 820px;
 }
 
 .thist-status-badge--high {
@@ -36,6 +36,11 @@
   line-height: 1.4;
   text-align: left;
   margin: 0;
+}
+
+.tdetail-header__label {
+  color: #64748b;
+  font-weight: 600;
 }
 
 /* ---------- stepper ---------- */
